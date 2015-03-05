@@ -79,17 +79,35 @@ void __patch(ServeurIceMP3Ptr&, const ::Ice::ObjectPtr&);
 namespace serveur
 {
 
+typedef ::std::vector< ::std::string> listetitre;
+
+typedef ::std::vector< ::std::string> listeauteur;
+
+}
+
+namespace serveur
+{
+
 class Callback_ServeurIceMP3_ajoutfichier_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ServeurIceMP3_ajoutfichier_Base> Callback_ServeurIceMP3_ajoutfichierPtr;
 
 class Callback_ServeurIceMP3_recherche_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ServeurIceMP3_recherche_Base> Callback_ServeurIceMP3_recherchePtr;
 
+class Callback_ServeurIceMP3_rechercheTitre_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ServeurIceMP3_rechercheTitre_Base> Callback_ServeurIceMP3_rechercheTitrePtr;
+
+class Callback_ServeurIceMP3_rechercheAuteur_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ServeurIceMP3_rechercheAuteur_Base> Callback_ServeurIceMP3_rechercheAuteurPtr;
+
 class Callback_ServeurIceMP3_suppression_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ServeurIceMP3_suppression_Base> Callback_ServeurIceMP3_suppressionPtr;
 
 class Callback_ServeurIceMP3_lireMp3_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ServeurIceMP3_lireMp3_Base> Callback_ServeurIceMP3_lireMp3Ptr;
+
+class Callback_ServeurIceMP3_lireMp3ParFichier_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_ServeurIceMP3_lireMp3ParFichier_Base> Callback_ServeurIceMP3_lireMp3ParFichierPtr;
 
 class Callback_ServeurIceMP3_stopMp3_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_ServeurIceMP3_stopMp3_Base> Callback_ServeurIceMP3_stopMp3Ptr;
@@ -289,6 +307,232 @@ private:
     
 public:
 
+    ::serveur::listetitre rechercheTitre(const ::std::string& titre)
+    {
+        return rechercheTitre(titre, 0);
+    }
+    ::serveur::listetitre rechercheTitre(const ::std::string& titre, const ::Ice::Context& __ctx)
+    {
+        return rechercheTitre(titre, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_rechercheTitre(const ::std::string& titre, const ::IceInternal::Function<void (const ::serveur::listetitre&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_rechercheTitre(titre, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_rechercheTitre(const ::std::string& titre, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_rechercheTitre(titre, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_rechercheTitre(const ::std::string& titre, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::serveur::listetitre&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_rechercheTitre(titre, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_rechercheTitre(const ::std::string& titre, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_rechercheTitre(titre, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_rechercheTitre(const ::std::string& titre, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::serveur::listetitre&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (const ::serveur::listetitre&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+                ::serveur::listetitre __ret;
+                try
+                {
+                    __ret = __proxy->end_rechercheTitre(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (const ::serveur::listetitre&)> _response;
+        };
+        return begin_rechercheTitre(titre, __ctx, new Cpp11CB(__response, __exception, __sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string& titre)
+    {
+        return begin_rechercheTitre(titre, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string& titre, const ::Ice::Context& __ctx)
+    {
+        return begin_rechercheTitre(titre, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string& titre, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheTitre(titre, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string& titre, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheTitre(titre, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string& titre, const ::serveur::Callback_ServeurIceMP3_rechercheTitrePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheTitre(titre, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string& titre, const ::Ice::Context& __ctx, const ::serveur::Callback_ServeurIceMP3_rechercheTitrePtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheTitre(titre, &__ctx, __del, __cookie);
+    }
+
+    ::serveur::listetitre end_rechercheTitre(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::serveur::listetitre rechercheTitre(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_rechercheTitre(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::serveur::listeauteur rechercheAuteur(const ::std::string& auteur)
+    {
+        return rechercheAuteur(auteur, 0);
+    }
+    ::serveur::listeauteur rechercheAuteur(const ::std::string& auteur, const ::Ice::Context& __ctx)
+    {
+        return rechercheAuteur(auteur, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_rechercheAuteur(const ::std::string& auteur, const ::IceInternal::Function<void (const ::serveur::listeauteur&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_rechercheAuteur(auteur, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_rechercheAuteur(const ::std::string& auteur, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_rechercheAuteur(auteur, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::serveur::listeauteur&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_rechercheAuteur(auteur, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_rechercheAuteur(auteur, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::serveur::listeauteur&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (const ::serveur::listeauteur&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+                ::serveur::listeauteur __ret;
+                try
+                {
+                    __ret = __proxy->end_rechercheAuteur(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (const ::serveur::listeauteur&)> _response;
+        };
+        return begin_rechercheAuteur(auteur, __ctx, new Cpp11CB(__response, __exception, __sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string& auteur)
+    {
+        return begin_rechercheAuteur(auteur, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::Context& __ctx)
+    {
+        return begin_rechercheAuteur(auteur, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheAuteur(auteur, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheAuteur(auteur, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string& auteur, const ::serveur::Callback_ServeurIceMP3_rechercheAuteurPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheAuteur(auteur, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string& auteur, const ::Ice::Context& __ctx, const ::serveur::Callback_ServeurIceMP3_rechercheAuteurPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_rechercheAuteur(auteur, &__ctx, __del, __cookie);
+    }
+
+    ::serveur::listeauteur end_rechercheAuteur(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::serveur::listeauteur rechercheAuteur(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_rechercheAuteur(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
     void suppression(const ::std::string& titre, const ::std::string& auteur)
     {
         suppression(titre, auteur, 0);
@@ -469,6 +713,119 @@ private:
 
     ::std::string lireMp3(const ::std::string&, const ::std::string&, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_lireMp3(const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::std::string lireMp3ParFichier(const ::std::string& fichier)
+    {
+        return lireMp3ParFichier(fichier, 0);
+    }
+    ::std::string lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context& __ctx)
+    {
+        return lireMp3ParFichier(fichier, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_lireMp3ParFichier(const ::std::string& fichier, const ::IceInternal::Function<void (const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_lireMp3ParFichier(fichier, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_lireMp3ParFichier(const ::std::string& fichier, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_lireMp3ParFichier(fichier, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_lireMp3ParFichier(fichier, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_lireMp3ParFichier(fichier, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (const ::std::string&)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (const ::std::string&)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+                ::std::string __ret;
+                try
+                {
+                    __ret = __proxy->end_lireMp3ParFichier(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (const ::std::string&)> _response;
+        };
+        return begin_lireMp3ParFichier(fichier, __ctx, new Cpp11CB(__response, __exception, __sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string& fichier)
+    {
+        return begin_lireMp3ParFichier(fichier, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context& __ctx)
+    {
+        return begin_lireMp3ParFichier(fichier, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_lireMp3ParFichier(fichier, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_lireMp3ParFichier(fichier, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string& fichier, const ::serveur::Callback_ServeurIceMP3_lireMp3ParFichierPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_lireMp3ParFichier(fichier, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string& fichier, const ::Ice::Context& __ctx, const ::serveur::Callback_ServeurIceMP3_lireMp3ParFichierPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_lireMp3ParFichier(fichier, &__ctx, __del, __cookie);
+    }
+
+    ::std::string end_lireMp3ParFichier(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::std::string lireMp3ParFichier(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_lireMp3ParFichier(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -712,9 +1069,15 @@ public:
 
     virtual ::std::string recherche(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
+    virtual ::serveur::listetitre rechercheTitre(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual ::serveur::listeauteur rechercheAuteur(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
     virtual void suppression(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
     virtual ::std::string lireMp3(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual ::std::string lireMp3ParFichier(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
     virtual bool stopMp3(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 };
@@ -738,9 +1101,15 @@ public:
 
     virtual ::std::string recherche(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
+    virtual ::serveur::listetitre rechercheTitre(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::serveur::listeauteur rechercheAuteur(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
     virtual void suppression(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual ::std::string lireMp3(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::std::string lireMp3ParFichier(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual bool stopMp3(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
@@ -764,9 +1133,15 @@ public:
 
     virtual ::std::string recherche(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
+    virtual ::serveur::listetitre rechercheTitre(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::serveur::listeauteur rechercheAuteur(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
     virtual void suppression(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual ::std::string lireMp3(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::std::string lireMp3ParFichier(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual bool stopMp3(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
@@ -796,11 +1171,20 @@ public:
     virtual ::std::string recherche(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___recherche(::IceInternal::Incoming&, const ::Ice::Current&);
 
+    virtual ::serveur::listetitre rechercheTitre(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___rechercheTitre(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::serveur::listeauteur rechercheAuteur(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___rechercheAuteur(::IceInternal::Incoming&, const ::Ice::Current&);
+
     virtual void suppression(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___suppression(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::std::string lireMp3(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___lireMp3(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::std::string lireMp3ParFichier(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___lireMp3ParFichier(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual bool stopMp3(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___stopMp3(::IceInternal::Incoming&, const ::Ice::Current&);
@@ -1014,6 +1398,206 @@ newCallback_ServeurIceMP3_recherche(T* instance, void (T::*cb)(const ::std::stri
 }
 
 template<class T>
+class CallbackNC_ServeurIceMP3_rechercheTitre : public Callback_ServeurIceMP3_rechercheTitre_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::serveur::listetitre&);
+
+    CallbackNC_ServeurIceMP3_rechercheTitre(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+        ::serveur::listetitre __ret;
+        try
+        {
+            __ret = __proxy->end_rechercheTitre(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_ServeurIceMP3_rechercheTitrePtr
+newCallback_ServeurIceMP3_rechercheTitre(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::serveur::listetitre&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ServeurIceMP3_rechercheTitre<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_ServeurIceMP3_rechercheTitrePtr
+newCallback_ServeurIceMP3_rechercheTitre(T* instance, void (T::*cb)(const ::serveur::listetitre&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ServeurIceMP3_rechercheTitre<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_ServeurIceMP3_rechercheTitre : public Callback_ServeurIceMP3_rechercheTitre_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::serveur::listetitre&, const CT&);
+
+    Callback_ServeurIceMP3_rechercheTitre(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+        ::serveur::listetitre __ret;
+        try
+        {
+            __ret = __proxy->end_rechercheTitre(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_ServeurIceMP3_rechercheTitrePtr
+newCallback_ServeurIceMP3_rechercheTitre(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::serveur::listetitre&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ServeurIceMP3_rechercheTitre<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ServeurIceMP3_rechercheTitrePtr
+newCallback_ServeurIceMP3_rechercheTitre(T* instance, void (T::*cb)(const ::serveur::listetitre&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ServeurIceMP3_rechercheTitre<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_ServeurIceMP3_rechercheAuteur : public Callback_ServeurIceMP3_rechercheAuteur_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::serveur::listeauteur&);
+
+    CallbackNC_ServeurIceMP3_rechercheAuteur(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+        ::serveur::listeauteur __ret;
+        try
+        {
+            __ret = __proxy->end_rechercheAuteur(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_ServeurIceMP3_rechercheAuteurPtr
+newCallback_ServeurIceMP3_rechercheAuteur(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::serveur::listeauteur&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ServeurIceMP3_rechercheAuteur<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_ServeurIceMP3_rechercheAuteurPtr
+newCallback_ServeurIceMP3_rechercheAuteur(T* instance, void (T::*cb)(const ::serveur::listeauteur&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ServeurIceMP3_rechercheAuteur<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_ServeurIceMP3_rechercheAuteur : public Callback_ServeurIceMP3_rechercheAuteur_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::serveur::listeauteur&, const CT&);
+
+    Callback_ServeurIceMP3_rechercheAuteur(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+        ::serveur::listeauteur __ret;
+        try
+        {
+            __ret = __proxy->end_rechercheAuteur(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_ServeurIceMP3_rechercheAuteurPtr
+newCallback_ServeurIceMP3_rechercheAuteur(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::serveur::listeauteur&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ServeurIceMP3_rechercheAuteur<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ServeurIceMP3_rechercheAuteurPtr
+newCallback_ServeurIceMP3_rechercheAuteur(T* instance, void (T::*cb)(const ::serveur::listeauteur&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ServeurIceMP3_rechercheAuteur<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
 class CallbackNC_ServeurIceMP3_suppression : public Callback_ServeurIceMP3_suppression_Base, public ::IceInternal::OnewayCallbackNC<T>
 {
 public:
@@ -1193,6 +1777,106 @@ template<class T, typename CT> Callback_ServeurIceMP3_lireMp3Ptr
 newCallback_ServeurIceMP3_lireMp3(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_ServeurIceMP3_lireMp3<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_ServeurIceMP3_lireMp3ParFichier : public Callback_ServeurIceMP3_lireMp3ParFichier_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(const ::std::string&);
+
+    CallbackNC_ServeurIceMP3_lireMp3ParFichier(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_lireMp3ParFichier(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_ServeurIceMP3_lireMp3ParFichierPtr
+newCallback_ServeurIceMP3_lireMp3ParFichier(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ServeurIceMP3_lireMp3ParFichier<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_ServeurIceMP3_lireMp3ParFichierPtr
+newCallback_ServeurIceMP3_lireMp3ParFichier(T* instance, void (T::*cb)(const ::std::string&), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_ServeurIceMP3_lireMp3ParFichier<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_ServeurIceMP3_lireMp3ParFichier : public Callback_ServeurIceMP3_lireMp3ParFichier_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const ::std::string&, const CT&);
+
+    Callback_ServeurIceMP3_lireMp3ParFichier(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::serveur::ServeurIceMP3Prx __proxy = ::serveur::ServeurIceMP3Prx::uncheckedCast(__result->getProxy());
+        ::std::string __ret;
+        try
+        {
+            __ret = __proxy->end_lireMp3ParFichier(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_ServeurIceMP3_lireMp3ParFichierPtr
+newCallback_ServeurIceMP3_lireMp3ParFichier(const IceUtil::Handle<T>& instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ServeurIceMP3_lireMp3ParFichier<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_ServeurIceMP3_lireMp3ParFichierPtr
+newCallback_ServeurIceMP3_lireMp3ParFichier(T* instance, void (T::*cb)(const ::std::string&, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_ServeurIceMP3_lireMp3ParFichier<T, CT>(instance, cb, excb, sentcb);
 }
 
 template<class T>

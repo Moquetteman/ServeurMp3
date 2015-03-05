@@ -17,8 +17,11 @@ class ServeurIceMP3I : public serveur :: ServeurIceMP3 {
 		~ServeurIceMP3I();
 		void ajoutfichier(const string & titre, const string & auteur, const string & fichier, const Ice::Current&);
 		string recherche(const string & titre, const string & auteur, const Ice::Current&);
+		serveur::listeauteur rechercheAuteur(const string & auteur, const Ice::Current&);
+		serveur::listetitre rechercheTitre(const string & titre, const Ice::Current&);
 		void suppression(const string & titre, const string & auteur, const Ice::Current&);
 		string lireMp3(const string & titre, const string &auteur, const Ice::Current&);
+		string lireMp3ParFichier(const string &fichier, const Ice::Current&);
 		bool stopMp3(const string & nom, const Ice::Current&);
 };
 
@@ -57,6 +60,32 @@ string ServeurIceMP3I :: recherche(const string& titre, const string& auteur, co
 		}
 	}
 	return "";
+}
+
+serveur :: listetitre ServeurIceMP3I :: rechercheTitre(const string& titre, const Ice::Current& icec)
+{
+	serveur :: listetitre rech;
+	for (list<MP3>::iterator it = liste.begin(); it!= liste.end(); ++it)
+	{
+		if (it->gettitre() == titre)
+		{
+			rech.push_back(it->getnom());
+		}
+	}
+	return rech;
+}
+
+serveur :: listeauteur ServeurIceMP3I :: rechercheAuteur(const string& auteur, const Ice::Current& icec)
+{
+	serveur :: listeauteur rech;
+	for (list<MP3>::iterator it = liste.begin(); it!= liste.end(); ++it)
+	{
+		if (it->getauteur() == auteur)
+		{
+			rech.push_back(it->getnom());
+		}
+	}
+	return rech;
 }
 
 void ServeurIceMP3I :: suppression(const string& titre, const string& auteur, const Ice::Current& icec)
@@ -108,6 +137,24 @@ bool ServeurIceMP3I :: stopMp3(const string& nom, const Ice::Current& icec)
 			libvlc_vlm_stop_media(vlc, media_name.c_str());
 			return true;
 		}
+}
+
+string ServeurIceMP3I :: lireMp3ParFichier(const string &fichier, const Ice::Current&)
+{
+	if (fichier == "")
+		return "";
+	else
+	{
+		string url = "../Audio/" + fichier;
+		string sout = "#transcode{acodec=mp3,ab=128,channels=2," \
+							"samplerate=44100}:http{dst=:8090/"+ fichier +"}";
+		const string media_name = fichier;
+
+		libvlc_vlm_add_broadcast(vlc, media_name.c_str(), url.c_str(), sout.c_str(), 0, NULL, true, false);
+		libvlc_vlm_play_media(vlc, media_name.c_str());
+
+		return fichier;
+	}
 }
 
 int main(int argc, char* argv[]){
